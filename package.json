@@ -1,0 +1,24 @@
+{
+  "name": "whatshomily",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "start:prod": "NODE_ENV=production npm start",
+    "start:dev": "NODE_ENV=development nodemon node ."
+  },
+  "keywords": [],
+  "author": "Guilherme Costa <guilhermeryukaii@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "qrcode-terminal": "^0.12.0",
+    "videoshow": "^0.1.12",
+    "whatsapp-web.js": "^1.16.7",
+    "winston": "^3.7.2"
+  }
+}

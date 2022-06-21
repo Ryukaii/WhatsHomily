@@ -1,0 +1,20 @@
+[[31merror[39m] 19-06-2022 17:14 Error: ffmpeg exited with code 1: Error initializing output stream 0:0 -- Error while opening encoder for output stream #0:0 - maybe incorrect parameters such as bit_rate, rate, width or height
+Conversion failed!
+
+[[31merror[39m] 19-06-2022 17:14 ffmpeg stderr:
+[[31merror[39m] 19-06-2022 17:17 Error: ffmpeg exited with code 1: Error initializing output stream 0:0 -- Error while opening encoder for output stream #0:0 - maybe incorrect parameters such as bit_rate, rate, width or height
+Conversion failed!
+
+[[31merror[39m] 19-06-2022 17:17 ffmpeg stderr:
+[[31merror[39m] 19-06-2022 17:18 Error: ffmpeg exited with code 1: Error initializing output stream 0:0 -- Error while opening encoder for output stream #0:0 - maybe incorrect parameters such as bit_rate, rate, width or height
+Conversion failed!
+
+[[31merror[39m] 19-06-2022 17:18 ffmpeg stderr:
+[[31merror[39m] 19-06-2022 17:23  > BitRate não pode ser menor que 0!
+[[31merror[39m] 19-06-2022 17:24  > BitRate não pode ser menor que 0!
+[[31merror[39m] 19-06-2022 17:24  > BitRate não pode ser menor que 0!
+[[31merror[39m] 19-06-2022 17:24  > Arquivo não pode ser gerado!
+[[31merror[39m] 19-06-2022 17:25  > BitRate não pode ser menor que 0!
+[[31merror[39m] 19-06-2022 17:25  > Arquivo não pode ser gerado!
+[[31merror[39m] 19-06-2022 17:25  > BitRate não pode ser menor que 0!
+[[31merror[39m] 19-06-2022 17:25  > Arquivo não pode ser gerado!
