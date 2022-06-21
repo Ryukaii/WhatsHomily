@@ -16,7 +16,7 @@ async function startNewConnection(){
 const puppeteerOptions = {
     headless: true,
     args: ["--no-sandbox"],
-    executablePath: '/usr/bin/google-chrome-stable',
+    //executablePath: '/usr/bin/google-chrome-stable',
 
 };
 
