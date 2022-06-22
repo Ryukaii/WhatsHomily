@@ -18,33 +18,41 @@ const logger = require('../../config/components/logger.js')
 
 
 async function startNewConnection(){
-    async function pupOptions(){
         if (projetcRun == 'dev') {
             const puppeteerOptions = {
                 headless: true,
                 args: ["--no-sandbox"],
                 executablePath: '/usr/bin/google-chrome-stable',
             };
+
+            const ws = new Client({
+                authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
+                restartOnAuthFail: true,
+                puppeteer: puppeteerOptions
+            });
+
             logger.info(" > Project em modo dev")
-            return puppeteerOptions
+            return ws
     } else if (projetcRun == 'prod') {
             const puppeteerOptions = {
                 headless: true,
                 args: ["--no-sandbox"],
-                //executablePath: '/usr/bin/google-chrome-stable',
             };
-            logger.info(" > Project em modo prod")
-            return puppeteerOptions
-        }
-}
-    
-    const puppeteerOptions = await pupOptions()
 
-const ws = new Client({
-    authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
-    restartOnAuthFail: true,
-    puppeteer: puppeteerOptions
-});
+            const ws = new Client({
+                authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
+                restartOnAuthFail: true,
+                puppeteer: puppeteerOptions
+            });
+            logger.info(" > Project em modo prod")
+            return ws
+        }
+
+    
+
+
+
+
 return ws
 }
 
@@ -97,7 +105,6 @@ async function main(){
     
     const ws = await startNewConnection()
     await checkAuth(ws)
-    //logger.info(ws)
     return ws
 
 }
