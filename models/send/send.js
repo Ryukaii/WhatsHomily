@@ -1,5 +1,5 @@
 require('dotenv').config()
-const webmode = process.env.WEB_MODE
+const videoDest = process.env.VIDEO_DEST
 
 async function videoExist() {
       
@@ -19,20 +19,20 @@ async function videoExist() {
     const ws = await require("../whatsapp");
     const {MessageMedia} = require('whatsapp-web.js');
 
-    async function chatSelected() {
-    if (webmode == 'dev') {
-        const chatwww = await ws.getChatById(grpIdTest);
-        return chatwww
-    } else if (webmode == 'prod') {
-        const chatwww = await ws.getChatById(grpIdHomilia);
-        return chatwww
+    async function chatDestiny() {
+    if (videoDest == 'test') {
+        const chat = await ws.getChatById(grpIdTest);
+        return chat
+    } else if (videoDest == 'homilia') {
+        const chat = await ws.getChatById(grpIdHomilia);
+        return chat
     }
     }
 
-    const chatSelectedd = await chatSelected()
+    const chatDest = await chatDestiny()
 
     let media = MessageMedia.fromFilePath(VIDEO_FILE_PATH)
-    await chatSelectedd.sendMessage(media)
+    await chatDest.sendMessage(media)
 
     //Enviando para diretório temporário 
     fs.rename(VIDEO_FILE_PATH, VIDEOTEMP_FILE_PATH, (err) => {

@@ -1,13 +1,11 @@
 async function videoNotExist() {
     require('dotenv').config()
-    const webmode = process.env.WEB_MODE
+    const audioOrigin = process.env.AUDIO_ORIGIN
 
     //ID's dos Grupos
     const grpIdHomilia = '556181705741-1607477310@g.us'
     const grpIdTest = '120363024953035513@g.us'
-
     const guisNumber = '556191089985@c.us'
-
 
     const fs = require('fs')
     const path = require('path')
@@ -20,43 +18,38 @@ async function videoNotExist() {
 
     const ws = await require("../whatsapp");
 
-    async function fromSelected() {
 
-        if (webmode == 'dev') {
-            const fromSelected = guisNumber
-            return fromSelected
-            
-        } else if (webmode == 'prod') {
-            const fromSelected = grpIdHomilia
-            return fromSelected
+    logger.info(' > Esperando Audio! ')
+
+    async function audioOriginer() {
+
+        if (audioOrigin == 'homilia') {
+            const audioOrigin = grpIdHomilia
+            return audioOrigin
+        } else if (audioOrigin == 'test') {
+            const audioOrigin = guisNumber
+            return audioOrigin
         }
     }
 
-    const fromSelectedNow = await fromSelected()
-
-    logger.info(' > Esperando Audio! ')
+    async function chatSelect() {
+        if (audioOrigin == 'test') {
+            const chat = await ws.getChatById(grpIdTest);
+            return chat
+        } else if (audioOrigin == 'homilia') {
+            const chat = await ws.getChatById(grpIdHomilia);
+            return chat
+        }
+    }
+    const chatSelected = await chatSelect()
 
     ws.on('message_create', async (inboundMsg) => {
         //console.log(inboundMsg);
         const { from, type } = inboundMsg;
-
-        if (type === 'audio' && from === fromSelectedNow) {
+        if (type === 'audio' && from === await audioOriginer()) {
             logger.info(' > Audio Recebido!')
-            async function chatSelected() {
 
-                if (webmode == 'dev') {
-                    const chatwww = await ws.getChatById(grpIdTest);
-                    return chatwww
-                } else if (webmode == 'prod') {
-                    const chatwww = await ws.getChatById(grpIdHomilia);
-                    return chatwww
-                }
-            }
-
-            const chatSelectedd = await chatSelected()
-            
-
-            let messages = await chatSelectedd.fetchMessages({ limit: 1 });
+            let messages = await chatSelected.fetchMessages({ limit: 1 });
         
             let tmpMsg = messages[0]
 
@@ -73,10 +66,10 @@ async function videoNotExist() {
                         logger.error(err);
                     }
                 })
+
             logger.info(' > Download Concluído!')
             const { renderVideo } = require(rootPath + '/models/convert/')
             renderVideo()
-
         }
 
     })
