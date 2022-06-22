@@ -3,3 +3,5 @@ config/.wwebjs_auth/
 node_modules/
 .env
 package-lock.json
+public/data/selectedAudio
+public/tmpvideo/videotmp.mp4
