@@ -1,3 +1,7 @@
+require('dotenv').config()   
+const projetcRun = process.env.PROJECT_RUN
+
+
 const fs = require('fs')
 const path = require('path')
 // rootPath, pasta raiz do projeto(whatshomily)
@@ -11,14 +15,30 @@ const sessionDataPath = rootPath + '/config/.wwebjs_auth'
 
 const logger = require('../../config/components/logger.js')
 
+
+
 async function startNewConnection(){
-
-const puppeteerOptions = {
-    headless: true,
-    args: ["--no-sandbox"],
-    //executablePath: '/usr/bin/google-chrome-stable',
-
-};
+    async function pupOptions(){
+        if (projetcRun == 'dev') {
+            const puppeteerOptions = {
+                headless: true,
+                args: ["--no-sandbox"],
+                executablePath: '/usr/bin/google-chrome-stable',
+            };
+            logger.info(" > Project em modo dev")
+            return puppeteerOptions
+    } else if (projetcRun == 'prod') {
+            const puppeteerOptions = {
+                headless: true,
+                args: ["--no-sandbox"],
+                //executablePath: '/usr/bin/google-chrome-stable',
+            };
+            logger.info(" > Project em modo prod")
+            return puppeteerOptions
+        }
+}
+    
+    const puppeteerOptions = await pupOptions()
 
 const ws = new Client({
     authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
