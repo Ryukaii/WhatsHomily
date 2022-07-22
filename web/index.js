@@ -13,7 +13,7 @@
     //Definição de diretórios
     
     const rootPath = path.resolve(__dirname, "..");
-    const FILE_VIDEO_PATH = rootPath + '/public/video/video.mp4'
+    const FILE_VIDEO_PATH = rootPath + '/public/data/video.mp4'
 
     if (webmode == 'dev') {
         logger.info(' > Webmode: dev')
@@ -22,6 +22,7 @@
     }
    
 
+    
     // Conferindo se o arquivo final está criado.
     if (fs.existsSync(FILE_VIDEO_PATH)) {
         logger.info(' > Video Existe!')

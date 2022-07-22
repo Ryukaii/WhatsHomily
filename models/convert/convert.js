@@ -5,26 +5,58 @@ const rootPath = path.resolve(__dirname, "..", "..");
 
 const fs = require('fs')
 
-const FILE_IMAGE_PATH = rootPath + '/public/data/selectedImage.png'
-const FILE_AUDIO_PATH = rootPath + '/public/data/selectedAudio'
-const FILE_VIDEO_PATH = rootPath + '/public/video/video.mp4'
+const FILE_VIDEO_PATH = rootPath + '/public/data/video.mp4'
+const FILE_AUDIO_PATH = rootPath + '/public/data/selectedAudio.mp3'
 
-const videoshow = require('videoshow')
+const { getHomiliaData }  = require( rootPath + '/models/misc')
+const { downloadFilesToBase64, sleep } = require(rootPath + '/utils/helpers')
 
-var images = [{
-    path: FILE_IMAGE_PATH
-}]
-  
+
+const videoshow = require('videoshow');
+
 async function renderVideo(){
-    const { vOptions } = require('../../config/components/convert.js')
-    var videoOptions = await vOptions()
+await downloadFilesToBase64()
+await sleep()
+    // wait downloadFilesToBase64() to start videoOptions()
+
     logger.info(' > Renderizando Video!')
 
-renderingVideo()
-function renderingVideo(){
+    var images = [{
+        path: rootPath + '/public/data/selectedImage.png',
+    }]
+    const homiliaData = await getHomiliaData()
+    
+    // send getHomiliaData() to videoOptions()
+    const loop = homiliaData.audioDuration 
+
+    
+
+        var videoOptions = {
+            fps: 25,
+            loop: loop, // seconds
+            transition: false,
+            videoBitrate: 250,
+            videoCodec: 'libx264',
+            size: '640x?',
+            audioBitrate: '128k',
+            audioChannels: 2,
+            format: 'mp4',
+            pixelFormat: 'yuv420p'
+        }
+
+    logger.info(' > Video Options: ' + JSON.stringify(videoOptions))
+    renderingVideo()
+function renderingVideo() {
 videoshow(images, videoOptions)
+
+
     .audio(FILE_AUDIO_PATH)
     .save(FILE_VIDEO_PATH)
+    .on('start', function (command) {
+        logger.info(' > Renderizando Video!')
+    }
+    )
+    
     .on('start', function (command) {
         logger.info('ffmpeg process started:', command)
     })
@@ -51,17 +83,17 @@ videoshow(images, videoOptions)
             logger.info(' > Reduzindo BitRate!')
 
             videoOptions.videoBitrate = videoOptions.videoBitrate -50
+
             if (videoOptions.videoBitrate == 0) {
                 logger.error(' > BitRate não pode ser menor que 0!')
                 logger.error(' > Arquivo não pode ser gerado!')
                 const { videoNotExist } = require('../wait')
                 videoNotExist()
                 return
-            }
+            }       
             renderingVideo()
-
-          
-          
+            
+            
 
         } else {
             logger.info(' > Arquivo respeito o limite')

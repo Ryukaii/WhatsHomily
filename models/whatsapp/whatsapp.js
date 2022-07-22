@@ -1,13 +1,13 @@
-require('dotenv').config()   
+require('dotenv').config()
 const projetcRun = process.env.PROJECT_RUN
 
 
 const fs = require('fs')
 const path = require('path')
 // rootPath, pasta raiz do projeto(whatshomily)
-const rootPath = path.join(__dirname, '..' ,'..' )
+const rootPath = path.join(__dirname, '..', '..')
 
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, LegacySessionAuth } = require('whatsapp-web.js');
 
 const qrcode = require('qrcode-terminal');
 
@@ -17,63 +17,66 @@ const logger = require('../../config/components/logger.js')
 
 
 
-async function startNewConnection(){
-        if (projetcRun == 'dev') {
-            const puppeteerOptions = {
-                headless: true,
-                args: ["--no-sandbox"],
-                executablePath: '/usr/bin/google-chrome-stable',
-            };
+async function startNewConnection() {
+    if (projetcRun == 'dev') {
+        const puppeteerOptions = {
+            headless: true,
+            args: ["--no-sandbox"],
+            executablePath: '/usr/bin/google-chrome-stable',
+        };
 
-            const ws = new Client({
-                authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
-                restartOnAuthFail: true,
-                puppeteer: puppeteerOptions
-            });
+        const ws = new Client({
+            authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
+            restartOnAuthFail: true,
+            puppeteer: puppeteerOptions
+        });
 
-            logger.info(" > Project em modo dev")
-            return ws
+        logger.info(" > Project em modo dev")
+        return ws
     } else if (projetcRun == 'prod') {
-            const puppeteerOptions = {
-                headless: true,
-                args: ["--no-sandbox"],
-            };
+        const puppeteerOptions = {
+            headless: true,
+            args: ["--no-sandbox"],
+        };
 
-            const ws = new Client({
-                authStrategy: new LocalAuth({ dataPath: sessionDataPath }),
+        const ws = new Client({
+            authStrategy: new LegacySessionAuth({
+                session: sessionLocal,
                 restartOnAuthFail: true,
-                puppeteer: puppeteerOptions
-            });
-            logger.info(" > Project em modo prod")
-            return ws
-        }
-
-    
-
+            }),
+            puppeteer: puppeteerOptions
+        });
+        logger.info(" > Project em modo prod")
+        return ws
+    }
 
 
 
-return ws
+
+
+
+    return ws
 }
 
 
 
-async function checkAuth(ws){
+async function checkAuth(ws) {
     logger.info(" > Verificando Autenticação!")
-        if (fs.existsSync(sessionDataPath)) {
-            logger.info(" > Autenticação Existe!")
-            await authenticatedWhats(ws)
-        } else if (!fs.existsSync(sessionDataPath)) {
-            logger.info(" > Autenticação Pai Não Existe!")
-            await qrWhats(ws)
-        }
+    if (fs.existsSync(sessionDataPath)) {
+        logger.info(" > Autenticação Existe!")
+        await authenticatedWhats(ws)
+    } else if (!fs.existsSync(sessionDataPath)) {
+        logger.info(" > Autenticação Pai Não Existe!")
+        await qrWhats(ws)
+    }
 }
 
 async function authenticatedWhats(ws) {
     logger.info(" > Autenticando!")
 
-    ws.on('authenticated', () => {
+    ws.on('authenticated', (session) => {
         logger.info(" > Autenticado!")
+        console.log(JSON.stringify(session));
     });
 
     ws.on('ready', () => {
@@ -97,15 +100,20 @@ async function qrWhats(ws) {
     });
 
     await ws.initialize();
-    
+
 }
 
 
-async function main(){
-    
-    const ws = await startNewConnection()
-    await checkAuth(ws)
-    return ws
+async function main() {
+    if (projetcRun == 'prod') {
+        const ws = await startNewConnection()
+        await checkAuth(ws)
+        return ws
+    } else if (projetcRun == 'dev') {
+        const ws = await startNewConnection()
+        await authenticatedWhats(ws)
+        return ws
+    }
 
 }
 

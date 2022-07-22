@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "node index.js",
     "start:prod": "NODE_ENV=production npm start",
     "start:dev": "NODE_ENV=development nodemon node ."
   },
@@ -15,10 +15,14 @@
     "nodemon": "^2.0.16"
   },
   "dependencies": {
+    "@google-cloud/storage": "^6.1.0",
     "dotenv": "^16.0.1",
+    "mimetypes": "^0.1.1",
+    "mongoose": "^6.4.0",
     "qrcode-terminal": "^0.12.0",
     "videoshow": "^0.1.12",
-    "whatsapp-web.js": "^1.16.7",
-    "winston": "^3.7.2"
+    "whatsapp-web.js": "github:jtourisNS/whatsapp-web.js#RemoteAuth",
+    "winston": "^3.7.2",
+    "wwebjs-mongo": "^1.0.4"
   }
 }

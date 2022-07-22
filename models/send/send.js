@@ -13,8 +13,12 @@ async function videoExist() {
     const grpIdHomilia = '556181705741-1607477310@g.us'
     const grpIdTest = '120363024953035513@g.us'
 
-    const VIDEO_FILE_PATH = rootPath + '/public/video/video.mp4'
+    const VIDEO_FILE_PATH = rootPath + '/public/data/video.mp4'
     const VIDEOTEMP_FILE_PATH = rootPath + '/public/tmpvideo/videotmp.mp4'
+    const DIR_DATA_PATH = rootPath + '/public/data/'
+
+    const { setAppToDefault } = require(rootPath + '/utils/helpers')
+
 
     const ws = await require("../whatsapp");
     const {MessageMedia} = require('whatsapp-web.js');
@@ -35,11 +39,9 @@ async function videoExist() {
     await chatDest.sendMessage(media)
 
     //Enviando para diretório temporário 
-    fs.rename(VIDEO_FILE_PATH, VIDEOTEMP_FILE_PATH, (err) => {
-        if (err) throw err;
-        logger.info(' > File Moved!');
-        logger.info(' > Esperando Audio!')
-    })
+
+    await setAppToDefault()
+    logger.info(' > Esperando Audio!')
     return
 }
 module.exports = { videoExist }

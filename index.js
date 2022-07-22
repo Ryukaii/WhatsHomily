@@ -4,6 +4,9 @@ const logger = require('./config/components/logger.js')
 
 const type = process.env.PROCESS_TYPE
 
+require('./utils/db')
+const {connectToDB} = require('./utils/db')
+require('./models/misc')
 
 logger.info(` > Iniciando em Modo ${type}!`, { pid: process.pid })
 
