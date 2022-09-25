@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node main.js",
     "start:prod": "NODE_ENV=production npm start",
     "start:dev": "NODE_ENV=development nodemon node ."
   },
@@ -12,17 +12,27 @@
   "author": "Guilherme Costa <guilhermeryukaii@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.16",
+    "prettier": "2.7.1"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.1.0",
+    "@types/fluent-ffmpeg": "^2.1.20",
     "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "fluent-ffmpeg": "^2.1.2",
     "mimetypes": "^0.1.1",
     "mongoose": "^6.4.0",
     "qrcode-terminal": "^0.12.0",
     "videoshow": "^0.1.12",
-    "whatsapp-web.js": "github:jtourisNS/whatsapp-web.js#RemoteAuth",
+    "whatsapp-web.js": "github:jtourisNS/whatsapp-web.js",
     "winston": "^3.7.2",
-    "wwebjs-mongo": "^1.0.4"
+    "wwebjs-mongo": "^1.1.0"
   }
 }
